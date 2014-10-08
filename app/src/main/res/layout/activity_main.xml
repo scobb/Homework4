@@ -9,8 +9,32 @@
     tools:context=".MainActivity">
 
     <TextView
-        android:text="@string/hello_world"
+        android:text="Enter a location:"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:id="@+id/locationPrompt" />
 
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/locationInput"
+        android:layout_below="@+id/locationPrompt"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="onClick"
+        android:text="Go!"
+        android:id="@+id/locationButton"
+        android:layout_below="@+id/locationInput"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <com.google.android.gms.maps.MapView
+        android:layout_width="match_parent"
+        android:apiKey="AIzaSyAen783dHbzKXmNo6qPRgudy3kdLlGRRKs"
+        android:layout_height="match_parent"
+        android:id="@+id/map" />
 </RelativeLayout>
