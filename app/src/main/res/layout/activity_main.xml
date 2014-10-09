@@ -32,9 +32,16 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
-    <com.google.android.gms.maps.MapView
+    <!--<com.google.android.gms.maps.MapView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:apiKey="AIzaSyCYusI1U7tW7Na7EHz0yPskpUDToVyV844"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:id="@+id/map" />-->
+
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/map"
+        android:layout_below="@+id/locationButton"
         android:layout_width="match_parent"
-        android:apiKey="AIzaSyAen783dHbzKXmNo6qPRgudy3kdLlGRRKs"
         android:layout_height="match_parent"
-        android:id="@+id/map" />
+        android:name="com.google.android.gms.maps.MapFragment"/>
 </RelativeLayout>

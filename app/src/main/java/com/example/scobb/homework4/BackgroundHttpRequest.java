@@ -39,6 +39,7 @@ public class BackgroundHttpRequest extends AsyncTask<URL, Void, JSONObject> {
                 resultString += line;
             }
             // build JSON from response
+            Log.d("Homework4", resultString);
             result = new JSONObject(resultString);
         }
         catch (Exception exc){
