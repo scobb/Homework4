@@ -1,7 +1,5 @@
 package com.example.scobb.homework4;
 
-import android.app.Activity;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -13,19 +11,17 @@ import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.MapView;
-import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.net.URI;
+import java.net.URLEncoder;
 
 
 public class MainActivity extends FragmentActivity {
     String key = "AIzaSyCYusI1U7tW7Na7EHz0yPskpUDToVyV844";
+    String browserKey = "AIzaSyCR-xadd76lvcXLfPpN1vZxOARdQBr5CvE";
     GoogleMap myMap = null;
 
     @Override
@@ -39,55 +35,45 @@ public class MainActivity extends FragmentActivity {
         Log.d("Homework4", "Bob says hi");
         MapFragment myMapFragment = (MapFragment)getFragmentManager().findFragmentById(R.id.map);
         myMap = myMapFragment.getMap();
-        EditText loc = (EditText)findViewById(R.id.locationInput);
-        String locText = loc.getText().toString().replace(" ", "+");
-        URL queryURL = null;
-        Uri.Builder builder = new Uri.Builder();
-        builder.scheme("https").authority("maps.googleapis.com").appendPath("maps").appendPath("api").appendPath("geocode").appendPath("json").appendQueryParameter("address",locText).appendQueryParameter("key", key);
-        String queryString = builder.build().toString();
-        try {
-            queryURL = new URL(queryString);
-        }
-        catch (java.net.MalformedURLException exc) {
-            // handle this case
-            Log.e("Homework4", "URL Stack trace:", exc);
-            return;
-        }
 
+        EditText locEntry = (EditText)findViewById(R.id.locationInput);
+        String location = locEntry.getText().toString();
+        URI queryURI = null;
+        try {
+            queryURI = new URI("https","maps.googleapis.com",
+                    "/maps/api/geocode/json","address=" + URLEncoder.encode(location, "UTF-8") +
+                    "&key=" +  browserKey, null);
+        } catch (Exception exc) {
+            Log.e("Homework4", "URI encoding: ", exc);
+        }
+        Toast.makeText(this, queryURI.toString(), Toast.LENGTH_LONG).show();
         JSONObject respJSON = null;
-//        try {
-//            respJSON = new BackgroundHttpRequest().execute(queryURL).get();
-//        }
-//        catch (Exception exc) {
-//            Log.e("Homework4", "Get Async Result Stacktrace:", exc);
-//        }
-//        try {
-//            if (!respJSON.get("status").equals("OK")) {
-//                // TODO: handle this case
-//
-//            }
-//            Log.d("Homework4", "resp status is " + respJSON.get("status"));
-//            else {
-//                JSONObject location = respJSON.getJSONObject("location");
-//                Double lat = (Double)location.get("lat");
-//                Double lon = (Double)location.get("lon");
-//                Toast.makeText(this, "Query string:\n" + queryString + "\nlat: " + lat + "\nlon: " + lon, Toast.LENGTH_LONG).show();
-//
-//
-//            }
-//        }
-//        catch (Exception exc) {
-//            Log.e("Homework4", "JSON Excpetion: ", exc);
-//        }
-        // get map
-        Log.d("Homework4", "Steve's cool debug msg");
-        SupportMapFragment mapFrag = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map));
-        GoogleMap myMap = mapFrag.getMap();
-//        if (myMap == null) {
-//            // TODO: handle this case
-//        }
-//
-//        // add pin to map
+        try {
+            respJSON = new BackgroundHttpRequest().execute(queryURI.toURL()).get();
+        } catch (Exception exc) {
+            Log.e("Homework4", "AsyncTask: ", exc);
+        }
+        Double lat = null;
+        Double lon = null;
+        if (respJSON != null) {
+            try {
+                lat = (Double) respJSON.getJSONArray("results").getJSONObject(0).
+                        getJSONObject("geometry").getJSONObject("location").get("lat");
+                lon = (Double) respJSON.getJSONArray("results").getJSONObject(0).
+                        getJSONObject("geometry").getJSONObject("location").get("lng");
+            }
+            catch (Exception exc) {
+                Log.e("Homework4", "JSON fail: ", exc);
+
+            }
+            Toast.makeText(this, "lat: " + lat + "lon: " + lon, Toast.LENGTH_LONG).show();
+
+        }
+        myMap.addMarker(new MarkerOptions()
+                .position(new LatLng(lat, lon))
+                .title(location));
+
+
 
 
     }
