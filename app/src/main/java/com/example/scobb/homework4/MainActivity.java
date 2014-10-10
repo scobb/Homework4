@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
@@ -46,7 +47,7 @@ public class MainActivity extends FragmentActivity {
         } catch (Exception exc) {
             Log.e("Homework4", "URI encoding: ", exc);
         }
-        Toast.makeText(this, queryURI.toString(), Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, queryURI.toString(), Toast.LENGTH_LONG).show();
         JSONObject respJSON = null;
         try {
             respJSON = new BackgroundHttpRequest().execute(queryURI.toURL()).get();
@@ -66,13 +67,15 @@ public class MainActivity extends FragmentActivity {
                 Log.e("Homework4", "JSON fail: ", exc);
 
             }
-            Toast.makeText(this, "lat: " + lat + "lon: " + lon, Toast.LENGTH_LONG).show();
 
         }
+        LatLng myLocation = new LatLng(lat, lon);
+        myMap.clear();
         myMap.addMarker(new MarkerOptions()
-                .position(new LatLng(lat, lon))
+                .position(myLocation)
                 .title(location));
 
+        myMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myLocation, (float)5.0));
 
 
 
