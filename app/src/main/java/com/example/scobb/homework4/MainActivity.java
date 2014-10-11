@@ -173,6 +173,15 @@ public class MainActivity extends FragmentActivity implements
                         .position(currentLatLng)
                         .title("Your position")
                         .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))));
+
+            float[] distResult = new float[1];
+            Location.distanceBetween(myCurrentLocation.getLatitude(), myCurrentLocation.getLongitude(),
+                    lat, lon, distResult);
+
+            findViewById(R.id.distTitle).setVisibility(View.VISIBLE);
+            TextView distValue = (TextView)findViewById(R.id.distValue);
+            distValue.setText(String.format("%.2f", distResult[0]/1609.34f) + " mi");
+            findViewById(R.id.distValue).setVisibility(View.VISIBLE);
         } else {
             Log.e("Homework4", "Current location is null.");
         }
@@ -189,14 +198,6 @@ public class MainActivity extends FragmentActivity implements
         LatLngBounds bounds = b.build();
         myMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 75));
 
-        float[] distResult = new float[1];
-        Location.distanceBetween(myCurrentLocation.getLatitude(), myCurrentLocation.getLongitude(),
-                lat, lon, distResult);
-
-        findViewById(R.id.distTitle).setVisibility(View.VISIBLE);
-        TextView distValue = (TextView)findViewById(R.id.distValue);
-        distValue.setText(String.format("%.2f", distResult[0]/1609.34f) + " mi");
-        findViewById(R.id.distValue).setVisibility(View.VISIBLE);
 
     }
 
