@@ -1,0 +1,4 @@
+$ telnet localhost 5554
+
+
+> geo fix -97.75 30.25

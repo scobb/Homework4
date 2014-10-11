@@ -17,6 +17,7 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:singleLine="true"
         android:id="@+id/locationInput"
         android:layout_below="@+id/locationPrompt"
         android:layout_alignParentLeft="true"
@@ -44,4 +45,30 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:name="com.google.android.gms.maps.MapFragment"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Distance to location:"
+        android:id="@+id/distTitle"
+        android:layout_alignTop="@+id/locationButton"
+        android:layout_alignRight="@+id/map"
+        android:layout_alignEnd="@+id/map"
+        android:visibility="invisible"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="bob"
+        android:id="@+id/distValue"
+        android:layout_below="@+id/distTitle"
+        android:layout_alignRight="@+id/map"
+        android:layout_alignEnd="@+id/map"
+        android:visibility="invisible"
+        android:layout_alignBottom="@+id/locationButton"
+        android:layout_alignLeft="@+id/distTitle"
+        android:layout_alignStart="@+id/distTitle" />
+
 </RelativeLayout>
