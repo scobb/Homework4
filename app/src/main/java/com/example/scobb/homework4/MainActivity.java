@@ -203,6 +203,7 @@ public class MainActivity extends FragmentActivity implements
             TextView distValue = (TextView)findViewById(R.id.distValue);
             distValue.setText(String.format("%.2f", distResult[0]/1609.34f) + " mi");
             findViewById(R.id.distValue).setVisibility(View.VISIBLE);
+            findViewById(R.id.directionButton).setVisibility(View.VISIBLE);
             if (distResult[0]/1609.34f > 4000.0){
                 // we won't want to zoom to fit both if it's farther than 4000 miles
                 myMarkers.remove(0);
@@ -223,8 +224,6 @@ public class MainActivity extends FragmentActivity implements
         LatLngBounds bounds = b.build();
         myMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 75));
 
-        // show the directions button
-        findViewById(R.id.directionButton).setVisibility(View.VISIBLE);
 
     }
 
