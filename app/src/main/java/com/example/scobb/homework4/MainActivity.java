@@ -2,10 +2,14 @@ package com.example.scobb.homework4;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.IntentSender;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -35,6 +39,7 @@ import org.json.JSONObject;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class MainActivity extends FragmentActivity implements
@@ -43,6 +48,7 @@ public class MainActivity extends FragmentActivity implements
     String key = "AIzaSyCYusI1U7tW7Na7EHz0yPskpUDToVyV844";
     String browserKey = "AIzaSyCR-xadd76lvcXLfPpN1vZxOARdQBr5CvE";
     GoogleMap myMap = null;
+    LatLng requestedLatLng = null;
     LocationClient myLocationClient;
     Location myCurrentLocation;
     ArrayList<Marker> myMarkers = new ArrayList<Marker>();
@@ -83,7 +89,7 @@ public class MainActivity extends FragmentActivity implements
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
-        /*
+        /* Sample code from google play website
          * Google Play services can resolve some errors it detects.
          * If the error has a resolution, try sending an Intent to
          * start a Google Play services activity that can resolve
@@ -114,7 +120,22 @@ public class MainActivity extends FragmentActivity implements
             }
         }
 
+    public void onDirectionClick(View view) {
+        // put together a location intent for the requested location
+        String url = String.format("http://maps.google.com/maps?saddr=%.6f,%.6f&daddr=%.6f,%.6f&mode=driving",
+                myCurrentLocation.getLatitude(), myCurrentLocation.getLongitude(), requestedLatLng.latitude, requestedLatLng.longitude);
+        Uri locUri = Uri.parse(url);
+        Intent mapIntent = new Intent(Intent.ACTION_VIEW, locUri);
 
+        // check that someone is ready to handle this intent
+        PackageManager packageManager = getPackageManager();
+        List<ResolveInfo> activities = packageManager.queryIntentActivities(mapIntent, 0);
+
+        // send the intent if it's safe to do so
+        if (activities.size() > 0) {
+            startActivity(mapIntent);
+        }
+    }
     public void onClick(View view) {
         /** gets desired location name from user, creates JSON request to send to google maps **/
         myCurrentLocation = myLocationClient.getLastLocation();
@@ -189,7 +210,7 @@ public class MainActivity extends FragmentActivity implements
         } else {
             Log.e("Homework4", "Current location is null.");
         }
-        LatLng requestedLatLng = new LatLng(lat, lon);
+        requestedLatLng = new LatLng(lat, lon);
         myMarkers.add(myMap.addMarker(new MarkerOptions()
                       .position(requestedLatLng)
                       .title(address)));
@@ -202,6 +223,8 @@ public class MainActivity extends FragmentActivity implements
         LatLngBounds bounds = b.build();
         myMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 75));
 
+        // show the directions button
+        findViewById(R.id.directionButton).setVisibility(View.VISIBLE);
 
     }
 

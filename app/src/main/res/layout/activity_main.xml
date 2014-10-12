@@ -50,25 +50,38 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Distance to location:"
+        android:text="Location distance:"
         android:id="@+id/distTitle"
-        android:layout_alignTop="@+id/locationButton"
-        android:layout_alignRight="@+id/map"
-        android:layout_alignEnd="@+id/map"
-        android:visibility="invisible"/>
+        android:layout_alignTop="@+id/directionButton"
+        android:visibility="invisible"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="bob"
+        android:text="180.10"
+        android:gravity="right"
         android:id="@+id/distValue"
         android:layout_below="@+id/distTitle"
         android:layout_alignRight="@+id/map"
         android:layout_alignEnd="@+id/map"
-        android:visibility="invisible"
         android:layout_alignBottom="@+id/locationButton"
         android:layout_alignLeft="@+id/distTitle"
-        android:layout_alignStart="@+id/distTitle" />
+        android:layout_alignStart="@+id/distTitle"
+        android:layout_gravity="right"
+        android:visibility="invisible" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="onDirectionClick"
+        android:text="Directions"
+        android:id="@+id/directionButton"
+        android:visibility="invisible"
+        android:layout_alignTop="@+id/locationButton"
+        android:layout_toRightOf="@+id/locationButton"
+        android:layout_toEndOf="@+id/locationButton" />
 
 </RelativeLayout>
