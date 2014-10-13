@@ -207,6 +207,8 @@ public class MainActivity extends FragmentActivity implements
             if (distResult[0]/1609.34f > 4000.0){
                 // we won't want to zoom to fit both if it's farther than 4000 miles
                 myMarkers.remove(0);
+                // nor will we offer directions
+                findViewById(R.id.directionButton).setVisibility(View.INVISIBLE);
             }
         } else {
             Log.e("Homework4", "Current location is null.");
